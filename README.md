@@ -19,6 +19,10 @@ the birthplace on a map for up to 250 extra points. Points fall off with distanc
 Each game is 10 files with 3 guesses per file. A file is worth 500 / 400 / 300 / 200 / 100 points
 for 0–4 clues opened, doubled in Specialist mode. Stats are kept in localStorage.
 
+## Live site
+
+https://yard1m.github.io/terrorguesser/ (GitHub Pages, deployed from `public/` by `.github/workflows/pages.yml` on every push to `main`).
+
 ## Run locally
 
 ```bash
