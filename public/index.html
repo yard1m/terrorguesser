@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TerrorGuesser</title>
+<meta name="description" content="Look at the photo and name the organisation. A guessing game built on Turkey's terror-wanted list, the history of political violence and Interpol's red notices.">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#060607">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23060607'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23b3141c' stroke-width='1.5'/%3E%3Cpath d='M16 6 L25 22 H7 Z' fill='none' stroke='%23d8d0bf' stroke-width='1.2'/%3E%3Ccircle cx='16' cy='17' r='2.4' fill='%23b3141c'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<svg class="bg-sigil" viewBox="0 0 400 400" aria-hidden="true">
+  <circle cx="200" cy="200" r="196"/><circle cx="200" cy="200" r="178" class="thin"/><circle cx="200" cy="200" r="96" class="thin"/>
+  <path d="M200 22 L354 289 H46 Z"/><path d="M200 378 L46 111 H354 Z"/>
+  <circle cx="200" cy="200" r="30"/><g class="ticks"></g>
+</svg>
+
+<header class="masthead">
+  <a class="brand" href="#" id="homeLink" aria-label="TerrorGuesser">
+    <svg class="brand-sigil" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17"/><circle cx="20" cy="20" r="12.5" class="thin"/><path d="M20 6 L32.1 27 H7.9 Z"/><circle cx="20" cy="21" r="3" class="fill"/></svg>
+    <span class="brand-word">Terror<em>Guesser</em></span>
+  </a>
+  <div class="hud" id="hud" hidden></div>
+  <nav class="nav">
+    <button class="link" id="codexBtn" data-i18n="nav.codex">Codex</button>
+    <button class="link" id="statsBtn" data-i18n="nav.record">Record</button>
+    <button class="link" id="aboutBtn" data-i18n="nav.sources">Sources</button>
+    <span class="lang" role="group" aria-label="Language">
+      <button class="link" data-lang="tr">TR</button><span aria-hidden="true">·</span><button class="link" data-lang="en">EN</button>
+    </span>
+  </nav>
+</header>
+
+<main id="app">
+  <!-- HOME -->
+  <section class="screen" id="homeScreen">
+    <div class="hero">
+      <svg class="hero-sigil" viewBox="0 0 400 400" aria-hidden="true">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="172" class="thin"/>
+        <circle cx="200" cy="200" r="120" class="thin"/>
+        <path d="M200 40 L338.6 280 H61.4 Z"/><path d="M200 360 L61.4 120 H338.6 Z" class="thin"/>
+        <ellipse cx="200" cy="200" rx="46" ry="26"/><circle cx="200" cy="200" r="13" class="fill"/>
+        <g class="ticks"></g>
+      </svg>
+      <p class="kicker" data-i18n="home.kicker"></p>
+      <h1 class="title">Terror<em>Guesser</em></h1>
+      <p class="lede" data-i18n="home.lede"></p>
+    </div>
+
+    <div class="orn" aria-hidden="true"></div>
+    <div class="sections" id="sections">
+      <button class="section-row" data-section="turkey">
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15"/><path d="M20 31 L9.6 13 H30.4 Z"/><circle cx="20" cy="19" r="2.2" class="fill"/></svg>
+        <span class="numeral">I</span>
+        <span class="sr-title">Türkiye</span>
+        <span class="sr-desc" data-i18n="sec.turkey.desc"></span>
+        <span class="sr-meta" id="metaTurkey"></span>
+      </button>
+      <button class="section-row" data-section="global">
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15"/><ellipse cx="20" cy="20" rx="6.5" ry="15"/><path d="M5 20 H35 M8 12.5 H32 M8 27.5 H32" class="thin"/><circle cx="20" cy="20" r="2.2" class="fill"/></svg>
+        <span class="numeral">II</span>
+        <span class="sr-title" data-i18n="sec.global.title">Global</span>
+        <span class="sr-desc" data-i18n="sec.global.desc"></span>
+        <span class="sr-meta" id="metaGlobal"></span>
+      </button>
+      <button class="section-row" data-section="interpol">
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 L36 20 L20 36 L4 20 Z"/><path d="M9 20 Q20 10 31 20 Q20 30 9 20 Z"/><circle cx="20" cy="20" r="3" class="fill"/></svg>
+        <span class="numeral">III</span>
+        <span class="sr-title">Interpol</span>
+        <span class="sr-desc" data-i18n="sec.interpol.desc"></span>
+        <span class="sr-meta" data-i18n="sec.interpol.meta"></span>
+      </button>
+      <button class="section-row" data-section="lone">
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15"/><path d="M20 5 V35 M5 20 H35" class="thin"/><circle cx="20" cy="20" r="6"/><circle cx="20" cy="20" r="2" class="fill"/></svg>
+        <span class="numeral">IV</span>
+        <span class="sr-title" data-i18n="codex.tab.lone">Lone attackers</span>
+        <span class="sr-desc" data-i18n="sec.lone.desc"></span>
+        <span class="sr-meta" id="metaLone"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- MODE -->
+  <section class="screen" id="modeScreen" hidden>
+    <div class="intro">
+      <button class="link back" id="backHome" data-i18n="nav.back">← All sections</button>
+      <h1 class="title small" id="modeTitle"></h1>
+      <p class="lede" id="modeLede"></p>
+      <div class="mode-list" id="modes"></div>
+      <ul class="rules" id="modeRules"></ul>
+      <button class="link codex-link" id="modeCodex" data-i18n="mode.codex"></button>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section class="screen" id="gameScreen" hidden>
+    <div class="case">
+      <figure class="portrait">
+        <div class="portrait-img">
+          <img id="photo" alt="" referrerpolicy="no-referrer" decoding="async">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="portrait-wait" id="photoLoading"></span>
+          <div class="attack-card" id="attackCard" hidden></div>
+          <span class="stamp" id="stamp" hidden></span>
+        </div>
+        <figcaption><span id="caseNo"></span><span class="guess-dots" id="guessesLeft"></span></figcaption>
+      </figure>
+
+      <div class="dossier">
+        <dl class="clues" id="clues">
+          <div class="clue" data-i="0"><dt id="clueLabel0"></dt><dd id="clueVal0"></dd></div>
+          <div class="clue" data-i="1"><dt id="clueLabel1"></dt><dd id="clueVal1"></dd><div class="map-wrap" id="mapWrap"></div></div>
+          <div class="clue" data-i="2"><dt id="clueLabel2"></dt><dd id="clueVal2"></dd></div>
+          <div class="clue" data-i="3"><dt id="clueLabel3"></dt><dd id="clueVal3"></dd></div>
+        </dl>
+        <button class="link hint" id="hintBtn"></button>
+      </div>
+    </div>
+
+    <div class="q-row"><h2 class="question" id="question"></h2><button class="link" id="openDrawer" data-i18n="game.whatAre"></button></div>
+    <div class="answers" id="answers" role="group"></div>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-kicker"><span id="verdictResult"></span> <span class="pts" id="verdictPoints"></span></p>
+      <h2 id="verdictOrg"></h2>
+      <p class="verdict-desc" id="verdictDesc"></p>
+      <blockquote class="charge" id="verdictCharge" hidden></blockquote>
+      <p class="verdict-meta" id="verdictMeta"></p>
+      <p class="verdict-links" id="verdictLinks"></p>
+
+      <div class="bonus" id="bonus" hidden>
+        <p class="bonus-q" id="bonusQ"></p>
+        <div class="bonus-map" id="bonusMap"></div>
+        <p class="bonus-result" id="bonusResult"></p>
+      </div>
+
+      <div class="verdict-actions">
+        <button class="primary" id="nextBtn"></button>
+        <button class="link" id="skipBonus" hidden></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- END -->
+  <section class="screen" id="endScreen" hidden>
+    <div class="report">
+      <p class="kicker" id="endKicker"></p>
+      <h1 class="title small" id="endScore"></h1>
+      <p class="lede" id="endLine"></p>
+      <div class="results">
+        <div>
+          <h3 data-i18n="end.byAnswer">By answer</h3>
+          <table class="tally" id="endTable"></table>
+        </div>
+        <div>
+          <h3 data-i18n="end.mistakes">Mistakes</h3>
+          <ul class="slips" id="endSlips"></ul>
+        </div>
+      </div>
+      <h3 data-i18n="end.thisGame">This game</h3>
+      <div class="strip" id="endStrip"></div>
+      <div class="end-actions">
+        <button class="primary" id="againBtn" data-i18n="end.again">Play again</button>
+        <button class="link" id="switchBtn" data-i18n="end.switch">Change section</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CODEX -->
+  <section class="screen" id="codexScreen" hidden>
+    <div class="codex">
+      <button class="link back" id="codexBack" data-i18n="nav.back2">← Back</button>
+      <p class="kicker" data-i18n="codex.kicker"></p>
+      <h1 class="title small" data-i18n="codex.title">The Codex</h1>
+      <p class="lede" data-i18n="codex.lede"></p>
+      <nav class="codex-tabs" id="codexTabs">
+        <button class="link" data-tab="turkey" data-i18n="codex.tab.turkey">Türkiye</button>
+        <button class="link" data-tab="global" data-i18n="codex.tab.global">Global</button>
+        <button class="link" data-tab="lone" data-i18n="codex.tab.lone">Lone attackers</button>
+        <button class="link" data-tab="interpol" data-i18n="codex.tab.interpol">Interpol</button>
+      </nav>
+      <div id="codexBody"></div>
+    </div>
+  </section>
+</main>
+
+<div class="drawer-veil" id="drawerVeil"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <p class="kicker" data-i18n="codex.kicker"></p>
+    <h2 data-i18n="codex.title">The Codex</h2>
+    <button class="drawer-close" id="drawerClose" aria-label="Close">×</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<footer class="colophon">
+  <div class="orn" aria-hidden="true"></div>
+  <p data-i18n="footer"></p>
+  <p class="year">TerrorGuesser · MMXXVI</p>
+</footer>
+
+<dialog id="aboutDlg" class="dlg">
+  <form method="dialog"><button class="dlg-close" aria-label="Close">×</button></form>
+  <div data-i18n-html="about"></div>
+</dialog>
+
+<dialog id="statsDlg" class="dlg">
+  <form method="dialog"><button class="dlg-close" aria-label="Close">×</button></form>
+  <h2 data-i18n="stats.title">Your record</h2>
+  <div id="statsBody"></div>
+  <button class="link" id="resetStats" data-i18n="stats.reset">Reset</button>
+</dialog>
+
+<script src="app.js?v=12"></script>
+</body>
+</html>
